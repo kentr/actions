@@ -4,6 +4,12 @@ inputs:
   node-version:
     description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.'
     required: true
+  ref:
+    description: >
+      The branch, tag or SHA to checkout. When checking out the repository that
+      triggered a workflow, this defaults to the reference or SHA for that
+      event.  Otherwise, uses the default branch.
+    required: false
 outputs:
   node-version:
     description: 'The installed node version.'
@@ -12,6 +18,8 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.ref }}
     - id: setup-node
       uses: actions/setup-node@v3
       with:
